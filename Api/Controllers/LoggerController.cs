@@ -20,10 +20,24 @@ namespace Api.Controllers
             return Ok();
         }
 
-        [HttpGet(nameof(Warning))]
+        [HttpPut(nameof(Warning))]
         public IActionResult Warning(string text)
         {
             logger.LogWarning(text);
+            return Ok();
+        }
+
+        [HttpDelete(nameof(Error))]
+        public IActionResult Error()
+        {
+            try
+            {
+                throw new NullReferenceException();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+            }
             return Ok();
         }
     }
