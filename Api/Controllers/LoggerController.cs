@@ -6,9 +6,9 @@ namespace Api.Controllers
     [ApiController]
     public class LoggerController : ControllerBase
     {
-        private readonly ILogger<LoggerController> logger;
+        private readonly Serilog.ILogger logger;
 
-        public LoggerController(ILogger<LoggerController> logger)
+        public LoggerController(Serilog.ILogger logger)
         {
             this.logger = logger;
         }
@@ -16,14 +16,21 @@ namespace Api.Controllers
         [HttpGet(nameof(Info))]
         public IActionResult Info(string text)
         {
-            logger.LogInformation(text);
+            logger.Information(text);
+            return Ok();
+        }
+
+        [HttpPost(nameof(Verbose))]
+        public IActionResult Verbose(string text)
+        {
+            logger.Verbose(text);
             return Ok();
         }
 
         [HttpPut(nameof(Warning))]
         public IActionResult Warning(string text)
         {
-            logger.LogWarning(text);
+            logger.Warning(text);
             return Ok();
         }
 
@@ -36,7 +43,7 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, ex.Message);
+                logger.Error(ex, ex.Message);
             }
             return Ok();
         }
